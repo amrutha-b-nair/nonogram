@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nonogram Game</title>
+    <style>
+        /* Add your CSS styling here */
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameGrid"></div>
+    <button onclick="checkSolution()">Check Solution</button>
+    <script>
+        // Add your JavaScript code here
+        const numRows = 5;
+        const numCols = 5;
+        let solution = []; // This would contain the solution for the current puzzle
+
+        function generatePuzzle() {
+            // Generate a random puzzle and store the solution
+            // This is just a placeholder
+            solution = [
+                [1, 0, 1, 0, 1],
+                [0, 1, 0, 1, 0],
+                [1, 0, 1, 0, 1],
+                [0, 1, 0, 1, 0],
+                [1, 0, 1, 0, 1]
+            ];
+
+            // Create the game grid based on numRows and numCols
+            const gameGrid = document.getElementById('gameGrid');
+            for (let i = 0; i < numRows; i++) {
+                for (let j = 0; j < numCols; j++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    // Add event listener to handle user interaction
+                    cell.addEventListener('click', () => {
+                        toggleCell(i, j);
+                    });
+                    gameGrid.appendChild(cell);
+                }
+                gameGrid.appendChild(document.createElement('br'));
+            }
+        }
+
+        function toggleCell(row, col) {
+            // Function to toggle the state of the cell (filled or empty)
+            // This is just a placeholder
+            const cell = document.getElementById(`cell_${row}_${col}`);
+            if (cell.style.backgroundColor === 'black') {
+                cell.style.backgroundColor = '';
+            } else {
+                cell.style.backgroundColor = 'black';
+            }
+        }
+
+        function checkSolution() {
+            // Function to check if the user's input matches the solution
+            // This is just a placeholder
+            // You would need to implement the actual logic to check the solution
+            alert('Checking solution...');
+        }
+
+        generatePuzzle(); // Generate the initial puzzle when the page loads
+    </script>
+</body>
+</html>
