@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nonogram</title>
+    <style>
+        .cell {
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        border: 2px solid black;
+        color: white;
+        border-radius: .5cm;
+        }
+    </style>
+  </head>
+</head>
+<body>
+    <h1>Nonogram</h1>
+    <div id="nonoCell" class="cell">
+        
+    </div>
+    <script>
+        const colorcell = document.getElementById('nonoCell');
+
+        colorcell.addEventListener('click', function() {
+            const currColor = colorcell.style.backgroundColor;
+            if (currColor === 'white' || currColor === '') {
+                colorcell.style.backgroundColor = "black";
+            } else {
+                colorcell.style.backgroundColor = "white";
+            }
+        });
+    </script>
+</body>
+</html>
