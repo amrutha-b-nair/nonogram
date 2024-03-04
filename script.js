@@ -6,88 +6,57 @@ document.addEventListener('DOMContentLoaded', function() {
   let nrows = 6;
   let ncols = 6;
   let celltot = nrows * ncols;
-  let rowHeadings = [];
-  let columnHeadings = [];
-
-  // const rowHeadings = [
-  //   [1, 2],
-  //   [3],
-  //   [4, 5],
-  //   // Add more rows of numbers as needed
-  // ];
-
-  // const columnHeadings = [
-  //   [1, 2, 3],
-  //   [4],
-  //   [5, 6],
-  //   // Add more columns of numbers as needed
-  // ];
 
   
-
-  function createGame() {
-    const solution = [];
-    let forRowNums = {};
-    for (let i = 0; i < ncols; i++) {
-      columnHeadings.push([]);
-      let cellsLeft = nrows;
-      let currRow = 0;
-      while (currRow < nrows) {
-        let selectRandom = Boolean(Math.random() < 0.5);
-        console.log(selectRandom);
-        if (selectRandom && cellsLeft > 0) {
-          let cellNum = Math.floor(Math.random()*Math.abs(cellsLeft - 2) + 1);
-          console.log(i,currRow, cellNum, cellsLeft)
-          cellsLeft -= (cellNum + 1);
-          for (let j = currRow; j < currRow + cellNum; j++){
-            // console.log(j);
-            if (j < nrows){
-              solution.push([j, i]);
-              if (!forRowNums.hasOwnProperty(j) ) {
-                forRowNums[j] = [];
-              }
-              forRowNums[j].push(i);
-            }            
-          }
-          columnHeadings[i].push(cellNum);
-          currRow += cellNum;
-        }
-        currRow++;
-      }
+  function generateGame(rows, cols) {
+    let grid = [];
+    for (let i = 0; i < rows; i++) {
+        grid.push(new Array(cols).fill(0));
     }
-    console.log(forRowNums, solution);
-    return {solution, forRowNums};
-  }
 
-  // console.log(columnHeadings)
-
-
-  const {solution, forRowNums} = createGame();
-  // console.log(solution, forRowNums);
-
-  for (let i = 0; i < nrows; i++){
-    rowHeadings[i] = [];
-    if (forRowNums[i] != undefined) {
-      let rowLenth = 1;
-      let rowCols = forRowNums[i].sort((a, b) => a - b);
-      for (let j = 1; j < rowCols.length; j++){
-        if (rowCols[j] === rowCols[j - 1] + 1) {
-          rowLenth++;    
-        } else {
-          rowHeadings[i].push(rowLenth);
-          rowLenth = 1;
+    let rowHeadings = [];
+    for (let i = 0; i < rows; i++) {
+        let hint = [];
+        let count = 0;
+        for (let j = 0; j < cols; j++) {
+            if (Math.random() < 0.5) {
+                count++;
+                grid[i][j] = 1; 
+            } else {
+                if (count > 0) {
+                    hint.push(count);
+                    count = 0;
+                }
+            }
         }
-      } 
-      rowHeadings[i].push(rowLenth);
-    } else {
-      console.log("$$$$$$$$$$$$$$$$$$$");
-      let randPos = Math.floor(Math.random()*Math.abs(nrows - 2) + 1);
-      let randNum = Math.floor(Math.random()*Math.abs(nrows - randPos - 2) + 1);
-      rowHeadings[i].push();
+        if (count > 0) {
+            hint.push(count);
+        }
+        rowHeadings.push(hint);
     }
+
+    let columnHeadings = [];
+    for (let j = 0; j < cols; j++) {
+        let hint = [];
+        let count = 0;
+        for (let i = 0; i < rows; i++) {
+            if (grid[i][j] === 1) {
+                count++;
+            } else {
+                if (count > 0) {
+                    hint.push(count);
+                    count = 0;
+                }
+            }
+        }
+        if (count > 0) {
+            hint.push(count);
+        }
+        columnHeadings.push(hint);
+    }
+    return {grid, rowHeadings, columnHeadings};
   }
-  console.log(forRowNums);
-  // console.log("#####",rowHeadings)
+  
 
   function createRowHeading(rowNumbers, rowIndex) {
     const rowHeading = document.createElement('div');
@@ -119,9 +88,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   gridContainer.style.display = 'grid';
   gridContainer.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
-  gridContainer.style.gridTemplateColumns = `repeat(${nrows} + 1, 1fr)`;
+  gridContainer.style.gridTemplateColumns = `repeat(${ncols} + 1, 1fr)`;
 
+  const {grid, rowHeadings, columnHeadings} = generateGame(nrows, ncols);
   
+  console.log(grid);
+  console.log(rowHeadings);
+  console.log(columnHeadings)
+
   createColumnHeadings();
   let row = 2;
   let column = 1;
