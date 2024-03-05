@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         grid.push(new Array(cols).fill(0));
     }
 
+    console.log(grid);
     let rowHeadings = [];
     for (let i = 0; i < rows; i++) {
         let hint = [];
@@ -57,6 +58,21 @@ document.addEventListener('DOMContentLoaded', function() {
     return {grid, rowHeadings, columnHeadings};
   }
   
+  function generateGrid(rows, cols) {
+    let grid = [];
+    for (let i = 0; i < rows; i++) {
+        grid.push(new Array(cols).fill(0));
+    }
+    for (let i = 0; i < Math.max(rows, cols); i++) {
+      if (i < rows) {
+          grid[i][Math.floor(Math.random() * cols)] = 1;
+      }
+      if (i < cols) {
+          grid[Math.floor(Math.random() * rows)][i] = 1; 
+      }
+    }
+  }
+  generateGrid(nrows, ncols);
 
   function createRowHeading(rowNumbers, rowIndex) {
     const rowHeading = document.createElement('div');
