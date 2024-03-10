@@ -10,9 +10,15 @@
 <body>
     <h1>Nonogram</h1>
     <div class="game-container">
-    <div id="gameGrid" class="game-grid"></div>
+      <div id="gameGrid" class="game-grid"></div>
+      <button id="submitBtn">Done</button>
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <h2>You Won!</h2>
+          <button id="playAgainBtn">Play Again</button>
+        </div>
+      </div>
     </div>
-    <button name="submitBtn">Done</button>
     <script type="module" src="./script.js"></script>
 </body>
 </html>

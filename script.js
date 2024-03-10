@@ -5,7 +5,38 @@ function emptyGrid(rows, cols) {
   }
   return grid;
 }
-  
+
+function getHeadings(grid, column) {
+  let rows = grid.length;
+  let cols = grid[0].length;
+  let hints = [];
+  for (let j = 0; j < cols; j++) {
+      let hint = [];
+      let count = 0;
+      for (let i = 0; i < rows; i++) {
+        let pos;
+        if (column === 1) {
+          pos = [i,j]
+        } else {
+          pos = [j,i]
+        }
+        if (grid[pos[0]][pos[1]] === 1) {
+            count++;
+        } else {
+            if (count > 0) {
+                hint.push(count);
+                count = 0;
+            }
+        }
+      }
+      if (count > 0) {
+          hint.push(count);
+      }
+      hints.push(hint);
+  }
+    return hints
+}
+
 function generateGame(rows, cols) {
   let grid = emptyGrid(rows,cols);
 
@@ -22,7 +53,7 @@ function generateGame(rows, cols) {
       let hint = [];
       let count = 0;
       for (let j = 0; j < cols; j++) {
-          if (Math.random() < 0.5) {
+          if (Math.random() < 0.5 || grid[i][j] === 1) {
               count++;
               grid[i][j] = 1; 
           } else {
@@ -37,38 +68,58 @@ function generateGame(rows, cols) {
       }
       rowHeadings.push(hint);
   }
-
-  let columnHeadings = [];
-  for (let j = 0; j < cols; j++) {
-      let hint = [];
-      let count = 0;
-      for (let i = 0; i < rows; i++) {
-          if (grid[i][j] === 1) {
-              count++;
-          } else {
-              if (count > 0) {
-                  hint.push(count);
-                  count = 0;
-              }
-          }
-      }
-      if (count > 0) {
-          hint.push(count);
-      }
-      columnHeadings.push(hint);
-  }
-  return {grid, rowHeadings, columnHeadings};
+  return {grid, rowHeadings};
 }
+
 if (typeof module === 'object') {
   module.exports = { generateGame };  
 }
 
+function compareHints(list1, list2) {
+  if (list1.length !== list2.length) {
+      return false;
+  }
+  
+  return list1.every((sublist1, index) => {
+      const sublist2 = list2[index];
+      
+      if (sublist1.length !== sublist2.length) {
+          return false;
+      }
+      
+      return sublist1.every((value, i) => value === sublist2[i]);
+  });
+}
+
+
+
+function checkSolution(solutionGrid, columnHeadings, rowHeadings) {
+  const colSolution = getHeadings(solutionGrid, 1);
+  const rowSolution = getHeadings(solutionGrid, 0);
+  console.log(colSolution, columnHeadings);
+  if (compareHints(colSolution, columnHeadings) && compareHints(rowSolution, rowHeadings)) {
+    return true;
+  }
+  return false;
+}
+
+function showModal() {
+  modal.style.display = 'block';
+  document.querySelector('.game-grid').style.filter = 'blur(5px)';
+}
+
+function hideModal() {
+  modal.style.display = 'none';
+  document.querySelector('.game-grid').style.filter = 'none';
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 
   const gameGrid = document.getElementById('gameGrid');
   let gridContainer = document.querySelector('.game-grid');
   const submitBtn = document.getElementById('submitBtn');
+  const modal = document.getElementById('modal');
+  const playAgainBtn = document.getElementById('playAgainBtn');
 
   let nrows = 6;
   let ncols = 6;
@@ -108,7 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
   gridContainer.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
   gridContainer.style.gridTemplateColumns = `repeat(${ncols} + 1, 1fr)`;
 
-  const {grid, rowHeadings, columnHeadings} = generateGame(nrows, ncols);
+  const {grid, rowHeadings} = generateGame(nrows, ncols);
+  const columnHeadings = getHeadings(grid, 1);
+
+  console.log(grid);
 
   createColumnHeadings();
   let row = 2;
@@ -136,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   colorCells.forEach((cell, index) => {
     cell.addEventListener('click', function() {
-      console.log(index);
       const currColor = cell.style.backgroundColor;
       const row = Math.floor(index / ncols);
       const column = index % ncols;
@@ -152,8 +205,19 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   submitBtn.addEventListener('click', function() {
+    const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
+    if (gameWon) {
+      showModal();
+    }
+  });
+  playAgainBtn.addEventListener('click', function() {
+    hideModal();
   });
 });
+
+
+
+
 
 
 
