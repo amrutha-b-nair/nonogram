@@ -12,9 +12,7 @@
     gap: 5px; 
     background-color: var(--platinum) ;
     padding: 10px;
-    height: 400px;
-    width: 400px;
-    margin: 10px;
+    margin: 10px auto;
 }
 
 .cell {
@@ -51,4 +49,9 @@ top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
 z-index: 10000; 
+}
+
+.row-heading, .column-heading{
+    text-align: center;
+    margin: auto;
 }

@@ -7,8 +7,14 @@ function emptyGrid(rows, cols) {
 }
 
 function getHeadings(grid, column) {
-  let rows = grid.length;
-  let cols = grid[0].length;
+  let rows, cols;
+  if (column === 1) {
+    rows = grid.length;
+    cols = grid[0].length;
+  } else {
+    cols = grid.length;
+    rows = grid[0].length;
+  }
   let hints = [];
   for (let j = 0; j < cols; j++) {
       let hint = [];
@@ -97,6 +103,7 @@ function checkSolution(solutionGrid, columnHeadings, rowHeadings) {
   const colSolution = getHeadings(solutionGrid, 1);
   const rowSolution = getHeadings(solutionGrid, 0);
   console.log(colSolution, columnHeadings);
+  console.log(rowSolution, rowHeadings);
   if (compareHints(colSolution, columnHeadings) && compareHints(rowSolution, rowHeadings)) {
     return true;
   }
@@ -113,6 +120,8 @@ function hideModal() {
   document.querySelector('.game-grid').style.filter = 'none';
 }
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
 
   const gameGrid = document.getElementById('gameGrid');
@@ -120,20 +129,26 @@ document.addEventListener('DOMContentLoaded', function() {
   const submitBtn = document.getElementById('submitBtn');
   const modal = document.getElementById('modal');
   const playAgainBtn = document.getElementById('playAgainBtn');
+  const newGameBtn = document.getElementById('newGame');
 
-  let nrows = 6;
+  let nrows = 7;
   let ncols = 6;
   let celltot = nrows * ncols;
 
-  
+  let width = (ncols+1)*45;
+  let height = (nrows+1)*45;
+
+  gridContainer.style.display = 'grid';
+  gridContainer.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
+  gridContainer.style.gridTemplateColumns = `repeat(${ncols} + 1, 1fr)`;
+  gridContainer.style.width = `${width}px`;
+  gridContainer.style.height = `${height}px`;
 
   function createRowHeading(rowNumbers, rowIndex) {
     const rowHeading = document.createElement('div');
     rowHeading.classList.add('row-heading');
     rowNumbers.forEach(number => {
-      const numberElement = document.createElement('div');
-      numberElement.textContent = number;
-      rowHeading.appendChild(numberElement);
+      rowHeading.innerHTML += (" " + String(number));
     });
     rowHeading.style.gridRow = rowIndex ;
     rowHeading.style.gridColumn = 1;
@@ -155,10 +170,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  gridContainer.style.display = 'grid';
-  gridContainer.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
-  gridContainer.style.gridTemplateColumns = `repeat(${ncols} + 1, 1fr)`;
-
   const {grid, rowHeadings} = generateGame(nrows, ncols);
   const columnHeadings = getHeadings(grid, 1);
 
@@ -178,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
     gridContainer.appendChild(cell);
     }
     column += 1;
-    if (column === nrows + 2) {
+    if (column === ncols + 2) {
       row += 1;
       column = 1;
     }
@@ -211,8 +222,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   playAgainBtn.addEventListener('click', function() {
-    hideModal();
+    hideModal(); 
+    window.location.reload();
   });
+
+  newGameBtn.addEventListener('click', function() {
+    window.location.reload();
+});
 });
 
 
