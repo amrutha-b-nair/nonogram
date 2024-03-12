@@ -5,6 +5,8 @@
     --mustard-yellow: #F2C76E;
     --blue-violet: #7A77B9;
     --lavender: #BD9DEA;
+    --light-lavender: #d7befa;
+    --yellow: #ebb953;
   }
 
 
@@ -55,3 +57,14 @@ z-index: 10000;
     text-align: center;
     margin: auto;
 }
+
+.flagged {
+    background-color: var(--mustard-yellow);
+}
+.flagged::after {
+    content: "X";
+}
+
+.hide-flagged::after {
+    display: none;
+  }

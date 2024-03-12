@@ -102,8 +102,8 @@ function compareHints(list1, list2) {
 function checkSolution(solutionGrid, columnHeadings, rowHeadings) {
   const colSolution = getHeadings(solutionGrid, 1);
   const rowSolution = getHeadings(solutionGrid, 0);
-  console.log(colSolution, columnHeadings);
-  console.log(rowSolution, rowHeadings);
+  // console.log(colSolution, columnHeadings);
+  // console.log(rowSolution, rowHeadings);
   if (compareHints(colSolution, columnHeadings) && compareHints(rowSolution, rowHeadings)) {
     return true;
   }
@@ -129,10 +129,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const submitBtn = document.getElementById('submitBtn');
   const modal = document.getElementById('modal');
   const playAgainBtn = document.getElementById('playAgainBtn');
+  const rePlayBtn = document.getElementById('rePlay');
   const newGameBtn = document.getElementById('newGame');
 
-  let nrows = 7;
-  let ncols = 6;
+  let nrows = 9;
+  let ncols = 10;
   let celltot = nrows * ncols;
 
   let width = (ncols+1)*45;
@@ -198,19 +199,36 @@ document.addEventListener('DOMContentLoaded', function() {
   const colorCells = document.querySelectorAll('.cell');
 
   const solutionGrid = emptyGrid(nrows, ncols);
-
   colorCells.forEach((cell, index) => {
     cell.addEventListener('click', function() {
       const currColor = cell.style.backgroundColor;
       const row = Math.floor(index / ncols);
       const column = index % ncols;
-      if (currColor === 'white' || currColor === '') {
-        cell.style.backgroundColor = "var(--tango-pink)";
+      if (currColor != 'var(--tango-pink)') {
+        cell.style.backgroundColor = 'var(--tango-pink)';
         solutionGrid[row][column] = 1;
 
       } else {
         cell.style.backgroundColor = "white";
         solutionGrid[row][column] = 0;
+      }
+      const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
+      if (gameWon) {
+        showModal();
+      }
+    });
+    
+    cell.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      const currColor = cell.style.backgroundColor;
+      const row = Math.floor(index / ncols);
+      const column = index % ncols;
+      solutionGrid[row][column] = 0;
+      if (currColor != 'var(--mustard-yellow)') {
+        console.log("fllaaagggiiitttt");
+        cell.style.backgroundColor = 'var(--mustard-yellow)';
+      } else {
+        cell.style.backgroundColor = 'white';
       }
     });
   });
@@ -224,6 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
   playAgainBtn.addEventListener('click', function() {
     hideModal(); 
     window.location.reload();
+  });
+
+  rePlayBtn.addEventListener('click', function() {
+    hideModal(); 
   });
 
   newGameBtn.addEventListener('click', function() {
