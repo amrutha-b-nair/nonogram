@@ -132,8 +132,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const rePlayBtn = document.getElementById('rePlay');
   const newGameBtn = document.getElementById('newGame');
 
-  let nrows = 9;
-  let ncols = 10;
+  let nrows = 6;
+  let ncols = 7;
   let celltot = nrows * ncols;
 
   let width = (ncols+1)*45;
@@ -224,9 +224,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const row = Math.floor(index / ncols);
       const column = index % ncols;
       solutionGrid[row][column] = 0;
-      if (currColor != 'var(--mustard-yellow)') {
-        console.log("fllaaagggiiitttt");
-        cell.style.backgroundColor = 'var(--mustard-yellow)';
+      if (currColor != 'var(--yellow)') {
+        cell.style.backgroundColor = 'var(--yellow)';
       } else {
         cell.style.backgroundColor = 'white';
       }
