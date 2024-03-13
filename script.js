@@ -8,7 +8,7 @@ function emptyGrid(rows, cols) {
 
 function getHeadings(grid, column) {
   let rows, cols;
-  if (column === 1) {
+  if (column === 1) { 
     rows = grid.length;
     cols = grid[0].length;
   } else {
@@ -110,12 +110,12 @@ function checkSolution(solutionGrid, columnHeadings, rowHeadings) {
   return false;
 }
 
-function showModal() {
+function showModal(modal) {
   modal.style.display = 'block';
   document.querySelector('.game-grid').style.filter = 'blur(5px)';
 }
 
-function hideModal() {
+function hideModal(modal) {
   modal.style.display = 'none';
   document.querySelector('.game-grid').style.filter = 'none';
 }
@@ -124,20 +124,25 @@ function hideModal() {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  const gameGrid = document.getElementById('gameGrid');
-  let gridContainer = document.querySelector('.game-grid');
+  // const gameGrid = document.getElementById('gameGrid');
+  const gridContainer = document.querySelector('.game-grid');
   const submitBtn = document.getElementById('submitBtn');
   const modal = document.getElementById('modal');
   const playAgainBtn = document.getElementById('playAgainBtn');
   const rePlayBtn = document.getElementById('rePlay');
   const newGameBtn = document.getElementById('newGame');
+  const rowsInput = document.getElementById('rows');
+  const colsInput = document.getElementById('cols');
+  const startGameBtn = document.getElementById('startGame');
+  
 
-  let nrows = 6;
-  let ncols = 7;
+  let nrows = parseInt(rowsInput.value);
+  let ncols = parseInt(colsInput.value);
   let celltot = nrows * ncols;
 
   let width = (ncols+1)*45;
   let height = (nrows+1)*45;
+
 
   gridContainer.style.display = 'grid';
   gridContainer.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
@@ -199,6 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const colorCells = document.querySelectorAll('.cell');
 
   const solutionGrid = emptyGrid(nrows, ncols);
+
   colorCells.forEach((cell, index) => {
     cell.addEventListener('click', function() {
       const currColor = cell.style.backgroundColor;
@@ -214,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
       if (gameWon) {
-        showModal();
+        showModal(modal);
       }
     });
     
@@ -235,21 +241,23 @@ document.addEventListener('DOMContentLoaded', function() {
   submitBtn.addEventListener('click', function() {
     const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
     if (gameWon) {
-      showModal();
+      showModal(modal);
     }
   });
   playAgainBtn.addEventListener('click', function() {
-    hideModal(); 
+    hideModal(modal); 
     window.location.reload();
   });
 
   rePlayBtn.addEventListener('click', function() {
-    hideModal(); 
+    hideModal(modal); 
+    // should revert back to same game with 00 solutiongrid and colors
+    
   });
 
   newGameBtn.addEventListener('click', function() {
     window.location.reload();
-});
+  });
 });
 
 
