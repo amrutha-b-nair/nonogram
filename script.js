@@ -102,8 +102,6 @@ function compareHints(list1, list2) {
 function checkSolution(solutionGrid, columnHeadings, rowHeadings) {
   const colSolution = getHeadings(solutionGrid, 1);
   const rowSolution = getHeadings(solutionGrid, 0);
-  // console.log(colSolution, columnHeadings);
-  // console.log(rowSolution, rowHeadings);
   if (compareHints(colSolution, columnHeadings) && compareHints(rowSolution, rowHeadings)) {
     return true;
   }
@@ -120,79 +118,83 @@ function hideModal(modal) {
   document.querySelector('.game-grid').style.filter = 'none';
 }
 
+function getDimension() {
+  const rowsInput = document.getElementById('rows');
+  const colsInput = document.getElementById('cols');
+  let nrows = parseInt(rowsInput.value);
+  let ncols = parseInt(colsInput.value);
+  return {nrows, ncols};
+}
 
+
+function createRowHeading(rowNumbers, rowIndex) {
+  const rowHeading = document.createElement('div');
+  rowHeading.classList.add('row-heading');
+  rowNumbers.forEach(number => {
+    rowHeading.innerHTML += (" " + String(number));
+  });
+  rowHeading.style.gridRow = rowIndex ;
+  rowHeading.style.gridColumn = 1;
+  return rowHeading;
+}
+
+function createColumnHeadings(gameGrid, columnHeadings) {
+  columnHeadings.forEach((columnNumbers, columnIndex) => {
+    const columnHeading = document.createElement('div');
+    columnHeading.classList.add('column-heading');
+    columnNumbers.forEach(number => {
+      const numberElement = document.createElement('div');
+      numberElement.textContent = number;
+      columnHeading.appendChild(numberElement);
+    });
+    columnHeading.style.gridRow = 1;
+    columnHeading.style.gridColumn = columnIndex + 2;
+    gameGrid.appendChild(columnHeading);
+  });
+  return gameGrid
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  // const gameGrid = document.getElementById('gameGrid');
-  const gridContainer = document.querySelector('.game-grid');
+  const gameGrid = document.querySelector('.game-grid');
   const submitBtn = document.getElementById('submitBtn');
   const modal = document.getElementById('modal');
   const playAgainBtn = document.getElementById('playAgainBtn');
   const rePlayBtn = document.getElementById('rePlay');
   const newGameBtn = document.getElementById('newGame');
-  const rowsInput = document.getElementById('rows');
-  const colsInput = document.getElementById('cols');
   const startGameBtn = document.getElementById('startGame');
   
-
-  let nrows = parseInt(rowsInput.value);
-  let ncols = parseInt(colsInput.value);
+  let {nrows, ncols} = getDimension()
+  
   let celltot = nrows * ncols;
 
   let width = (ncols+1)*45;
   let height = (nrows+1)*45;
 
 
-  gridContainer.style.display = 'grid';
-  gridContainer.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
-  gridContainer.style.gridTemplateColumns = `repeat(${ncols} + 1, 1fr)`;
-  gridContainer.style.width = `${width}px`;
-  gridContainer.style.height = `${height}px`;
-
-  function createRowHeading(rowNumbers, rowIndex) {
-    const rowHeading = document.createElement('div');
-    rowHeading.classList.add('row-heading');
-    rowNumbers.forEach(number => {
-      rowHeading.innerHTML += (" " + String(number));
-    });
-    rowHeading.style.gridRow = rowIndex ;
-    rowHeading.style.gridColumn = 1;
-    gridContainer.appendChild(rowHeading);
-  }
-
-  function createColumnHeadings() {
-    columnHeadings.forEach((columnNumbers, columnIndex) => {
-      const columnHeading = document.createElement('div');
-      columnHeading.classList.add('column-heading');
-      columnNumbers.forEach(number => {
-        const numberElement = document.createElement('div');
-        numberElement.textContent = number;
-        columnHeading.appendChild(numberElement);
-      });
-      columnHeading.style.gridRow = 1;
-      columnHeading.style.gridColumn = columnIndex + 2;
-      gridContainer.appendChild(columnHeading);
-    });
-  }
+  gameGrid.style.display = 'grid';
+  gameGrid.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
+  gameGrid.style.gridTemplateColumns = `repeat(${ncols} + 1, 1fr)`;
+  gameGrid.style.width = `${width}px`;
+  gameGrid.style.height = `${height}px`;
 
   const {grid, rowHeadings} = generateGame(nrows, ncols);
   const columnHeadings = getHeadings(grid, 1);
 
   console.log(grid);
 
-  createColumnHeadings();
+  createColumnHeadings(gameGrid, columnHeadings);
   let row = 2;
   let column = 1;
   for (let i = 1; i <= celltot + nrows; i++) {
     if (column === 1) {
-      createRowHeading(rowHeadings[row-2], row);
+      gameGrid.appendChild(createRowHeading(rowHeadings[row-2], row));
     } else {
     let cell = document.createElement('div');
     cell.classList.add('cell');
     cell.style.gridRow = row;
     cell.style.gridColumn = column;
-    gridContainer.appendChild(cell);
+    gameGrid.appendChild(cell);
     }
     column += 1;
     if (column === ncols + 2) {
@@ -252,10 +254,13 @@ document.addEventListener('DOMContentLoaded', function() {
   rePlayBtn.addEventListener('click', function() {
     hideModal(modal); 
     // should revert back to same game with 00 solutiongrid and colors
-    
+
   });
 
   newGameBtn.addEventListener('click', function() {
+    window.location.reload();
+  });
+  startGameBtn.addEventListener('click', function() {
     window.location.reload();
   });
 });
