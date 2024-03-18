@@ -170,8 +170,7 @@ function generateGame(gameGrid, nrows, ncols) {
   const columnHeadings = getHeadings(grid, 1);
 
   console.log(grid);
-  // let solutionGrid = emptyGrid(nrows, ncols);
-  // console.log(solutionGrid);
+
   createColumnHeadings(gameGrid, columnHeadings);
   let row = 2;
   let column = 1;
@@ -240,7 +239,6 @@ function startGame() {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  // const gameGrid = document.querySelector('.game-grid');
   const submitBtn = document.getElementById('submitBtn');
   const modal = document.getElementById('modal');
   const playAgainBtn = document.getElementById('playAgainBtn');
