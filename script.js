@@ -6,6 +6,8 @@ function emptyGrid(rows, cols) {
   return grid;
 }
 
+// let solutionGrid = emptyGrid();
+
 function getHeadings(grid, column) {
   let rows, cols;
   if (column === 1) { 
@@ -43,7 +45,7 @@ function getHeadings(grid, column) {
     return hints
 }
 
-function generateGame(rows, cols) {
+function generateGrid(rows, cols) {
   let grid = emptyGrid(rows,cols);
 
   for (let i = 0; i < Math.max(rows, cols); i++) {
@@ -78,7 +80,7 @@ function generateGame(rows, cols) {
 }
 
 if (typeof module === 'object') {
-  module.exports = { generateGame };  
+  module.exports = { generateGrid };  
 }
 
 function compareHints(list1, list2) {
@@ -154,35 +156,22 @@ function createColumnHeadings(gameGrid, columnHeadings) {
   return gameGrid
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-
-  const gameGrid = document.querySelector('.game-grid');
-  const submitBtn = document.getElementById('submitBtn');
-  const modal = document.getElementById('modal');
-  const playAgainBtn = document.getElementById('playAgainBtn');
-  const rePlayBtn = document.getElementById('rePlay');
-  const newGameBtn = document.getElementById('newGame');
-  const startGameBtn = document.getElementById('startGame');
-  
-  let {nrows, ncols} = getDimension()
-  
+function generateGame(gameGrid, nrows, ncols) {
   let celltot = nrows * ncols;
-
   let width = (ncols+1)*45;
   let height = (nrows+1)*45;
-
-
   gameGrid.style.display = 'grid';
   gameGrid.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
   gameGrid.style.gridTemplateColumns = `repeat(${ncols} + 1, 1fr)`;
   gameGrid.style.width = `${width}px`;
   gameGrid.style.height = `${height}px`;
 
-  const {grid, rowHeadings} = generateGame(nrows, ncols);
+  const {grid, rowHeadings} = generateGrid(nrows, ncols);
   const columnHeadings = getHeadings(grid, 1);
 
   console.log(grid);
-
+  // let solutionGrid = emptyGrid(nrows, ncols);
+  // console.log(solutionGrid);
   createColumnHeadings(gameGrid, columnHeadings);
   let row = 2;
   let column = 1;
@@ -202,11 +191,17 @@ document.addEventListener('DOMContentLoaded', function() {
       column = 1;
     }
   }
+  return {columnHeadings, rowHeadings};
+}
 
+
+function startGame() {
+  const gameGrid = document.querySelector('.game-grid');
+  let {nrows, ncols} = getDimension();
+  let solutionGrid = emptyGrid(nrows, ncols);
+  gameGrid.innerHTML = '';  
+  const {columnHeadings, rowHeadings} = generateGame(gameGrid, nrows, ncols);
   const colorCells = document.querySelectorAll('.cell');
-
-  const solutionGrid = emptyGrid(nrows, ncols);
-
   colorCells.forEach((cell, index) => {
     cell.addEventListener('click', function() {
       const currColor = cell.style.backgroundColor;
@@ -239,6 +234,22 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+  return {solutionGrid, rowHeadings, columnHeadings};
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  // const gameGrid = document.querySelector('.game-grid');
+  const submitBtn = document.getElementById('submitBtn');
+  const modal = document.getElementById('modal');
+  const playAgainBtn = document.getElementById('playAgainBtn');
+  const rePlayBtn = document.getElementById('rePlay');
+  const newGameBtn = document.getElementById('newGame');
+  const startGameBtn = document.getElementById('startGame');
+
+
+  let {solutionGrid, rowHeadings, columnHeadings} = startGame();
 
   submitBtn.addEventListener('click', function() {
     const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
@@ -253,16 +264,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   rePlayBtn.addEventListener('click', function() {
     hideModal(modal); 
-    // should revert back to same game with 00 solutiongrid and colors
-
   });
 
-  newGameBtn.addEventListener('click', function() {
-    window.location.reload();
-  });
-  startGameBtn.addEventListener('click', function() {
-    window.location.reload();
-  });
+  newGameBtn.addEventListener('click', startGame);
+
+  startGameBtn.addEventListener('click', startGame);
 });
 
 
