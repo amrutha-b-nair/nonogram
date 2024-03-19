@@ -231,6 +231,10 @@ function startGame() {
       } else {
         cell.style.backgroundColor = 'white';
       }
+      const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
+      if (gameWon) {
+        showModal(modal);
+      }
     });
   });
   return {solutionGrid, rowHeadings, columnHeadings};
