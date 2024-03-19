@@ -249,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const rePlayBtn = document.getElementById('rePlay');
   const newGameBtn = document.getElementById('newGame');
   const startGameBtn = document.getElementById('startGame');
+  const restartBtn = document.getElementById('restart');
 
 
   let {solutionGrid, rowHeadings, columnHeadings} = startGame();
@@ -271,6 +272,11 @@ document.addEventListener('DOMContentLoaded', function() {
   newGameBtn.addEventListener('click', startGame);
 
   startGameBtn.addEventListener('click', startGame);
+
+  restartBtn.addEventListener('click', function() {
+    solutionGrid.forEach(sublist => sublist.fill(0));
+    document.querySelectorAll('.cell').forEach(cell => cell.style.backgroundColor = 'white');    
+  })
 });
 
 
