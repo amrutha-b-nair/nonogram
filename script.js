@@ -193,6 +193,30 @@ function generateGame(gameGrid, nrows, ncols) {
   return {columnHeadings, rowHeadings};
 }
 
+function darkerColor(color) {
+  if (color === 'var(--tango-pink)'){
+    return 'var(--dark-pink)';
+    // return 'var(--dusty-pink)';
+  } else if (color === '--yellow'){
+    return 'var(--mustard-yellow)';
+  } else {
+    return 'var(--light-lavender)';
+  }
+}
+
+
+function lighterColor(color) {
+  console.log(color);
+  if (color === 'var(--dark-pink)'){
+    return 'var(--tango-pink)';
+    // return 'var(--dusty-pink)';
+  } else if (color === '--mustard-yellow'){
+    return 'var(--yellow)';
+  } else {
+    return 'white';
+  }
+}
+
 
 function startGame() {
   const gameGrid = document.querySelector('.game-grid');
@@ -200,12 +224,12 @@ function startGame() {
   let solutionGrid = emptyGrid(nrows, ncols);
   gameGrid.innerHTML = '';  
   const {columnHeadings, rowHeadings} = generateGame(gameGrid, nrows, ncols);
-  const colorCells = document.querySelectorAll('.cell');
-  colorCells.forEach((cell, index) => {
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach((cell, index) => {
+    const row = Math.floor(index / ncols);
+    const column = index % ncols;
     cell.addEventListener('click', function() {
       const currColor = cell.style.backgroundColor;
-      const row = Math.floor(index / ncols);
-      const column = index % ncols;
       if (currColor != 'var(--tango-pink)') {
         cell.style.backgroundColor = 'var(--tango-pink)';
         solutionGrid[row][column] = 1;
@@ -223,9 +247,8 @@ function startGame() {
     cell.addEventListener('contextmenu', function(e) {
       e.preventDefault();
       const currColor = cell.style.backgroundColor;
-      const row = Math.floor(index / ncols);
-      const column = index % ncols;
       solutionGrid[row][column] = 0;
+
       if (currColor != 'var(--yellow)') {
         cell.style.backgroundColor = 'var(--yellow)';
       } else {
@@ -236,6 +259,28 @@ function startGame() {
         showModal(modal);
       }
     });
+
+    let selected_cells = Array.from({ length: ncols + nrows -1 }, (_, i) => {
+      return i < ncols && i !== column ? row * ncols + i : column + (i - ncols) * nrows;
+    });
+    console.log(selected_cells);
+    
+    cell.addEventListener('mouseenter', function() {
+      selected_cells.forEach((index) => {
+        const originalColor = cells[index].style.backgroundColor;
+        const newColor = darkerColor(originalColor);
+        cells[index].style.backgroundColor = newColor;
+      })
+    });
+
+    cell.addEventListener('mouseleave', function() {
+      selected_cells.forEach((index) => {
+        const originalColor = cells[index].style.backgroundColor;
+        const newColor = lighterColor(originalColor);
+        cells[index].style.backgroundColor = newColor;
+      })
+    });
+
   });
   return {solutionGrid, rowHeadings, columnHeadings};
 }
