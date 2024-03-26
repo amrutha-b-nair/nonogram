@@ -193,11 +193,11 @@ function generateGame(gameGrid, nrows, ncols) {
   return {columnHeadings, rowHeadings};
 }
 
-function darkerColor(color) {
-  if (color === 'var(--tango-pink)'){
+function selectColor(color) {
+  if (color === 'var(--tango-pink)' || color === 'var(--dark-pink)'){
     return 'var(--dark-pink)';
     // return 'var(--dusty-pink)';
-  } else if (color === '--yellow'){
+  } else if (color === 'var(--yellow)' || color === 'var(--mustard-yellow)'){
     return 'var(--mustard-yellow)';
   } else {
     return 'var(--light-lavender)';
@@ -205,12 +205,11 @@ function darkerColor(color) {
 }
 
 
-function lighterColor(color) {
-  console.log(color);
-  if (color === 'var(--dark-pink)'){
+function unselectColor(color) {
+  if (color === 'var(--dark-pink)' ||  color === 'var(--tango-pink)'){
     return 'var(--tango-pink)';
     // return 'var(--dusty-pink)';
-  } else if (color === '--mustard-yellow'){
+  } else if (color === 'var(--yellow)' || color === 'var(--mustard-yellow)'){
     return 'var(--yellow)';
   } else {
     return 'white';
@@ -230,7 +229,7 @@ function startGame() {
     const column = index % ncols;
     cell.addEventListener('click', function() {
       const currColor = cell.style.backgroundColor;
-      if (currColor != 'var(--tango-pink)') {
+      if (currColor != 'var(--tango-pink)' && currColor != 'var(--dark-pink)') {
         cell.style.backgroundColor = 'var(--tango-pink)';
         solutionGrid[row][column] = 1;
 
@@ -249,7 +248,7 @@ function startGame() {
       const currColor = cell.style.backgroundColor;
       solutionGrid[row][column] = 0;
 
-      if (currColor != 'var(--yellow)') {
+      if (currColor != 'var(--yellow)' || currColor != 'var(--mustard-yellow)') {
         cell.style.backgroundColor = 'var(--yellow)';
       } else {
         cell.style.backgroundColor = 'white';
@@ -260,26 +259,36 @@ function startGame() {
       }
     });
 
-    let selected_cells = Array.from({ length: ncols + nrows -1 }, (_, i) => {
-      return i < ncols && i !== column ? row * ncols + i : column + (i - ncols) * nrows;
-    });
-    console.log(selected_cells);
+    let selected_cells = Array.from({ length: ncols + nrows }, (_, i) => {
+      if (i < ncols && i !== column) {
+        return row * ncols + i;
+      } else if (i >= ncols && i !== column) {
+        return column + (i - ncols) * ncols;
+      } 
+    }).filter(cell => cell !== undefined);
     
-    cell.addEventListener('mouseenter', function() {
-      selected_cells.forEach((index) => {
-        const originalColor = cells[index].style.backgroundColor;
-        const newColor = darkerColor(originalColor);
-        cells[index].style.backgroundColor = newColor;
-      })
-    });
+    
+    let hoverTimeout;
 
+    cell.addEventListener('mouseenter', function() {
+      hoverTimeout = setTimeout(() => {
+        selected_cells.forEach((index) => {
+          const originalColor = cells[index].style.backgroundColor;
+          const newColor = selectColor(originalColor);
+          cells[index].style.backgroundColor = newColor;
+        });
+      }, 300);
+    });
+    
     cell.addEventListener('mouseleave', function() {
+      clearTimeout(hoverTimeout);
       selected_cells.forEach((index) => {
         const originalColor = cells[index].style.backgroundColor;
-        const newColor = lighterColor(originalColor);
+        const newColor = unselectColor(originalColor);
         cells[index].style.backgroundColor = newColor;
-      })
+      });
     });
+    
 
   });
   return {solutionGrid, rowHeadings, columnHeadings};
