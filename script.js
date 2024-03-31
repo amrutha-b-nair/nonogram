@@ -307,16 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let {solutionGrid, rowHeadings, columnHeadings} = startGame();
 
-  // submitBtn.addEventListener('click', function() {
-  //   const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
-  //   if (gameWon) {
-  //     showModal(modal);
-  //   }
-  // });
-  playAgainBtn.addEventListener('click', function() {
-    hideModal(modal); 
-    window.location.reload();
-  });
+  playAgainBtn.addEventListener('click', startGame);
 
   rePlayBtn.addEventListener('click', function() {
     hideModal(modal); 
