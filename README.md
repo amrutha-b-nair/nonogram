@@ -7,7 +7,7 @@
 
 You can play the Nonogram game online by visiting the following page:
 
-[Nonogram Game](https://amrutha-b-nair.github.io/nonogram/)
+[Play](https://amrutha-b-nair.github.io/nonogram/)
 
 ## How to Play
 
