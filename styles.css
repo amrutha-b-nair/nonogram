@@ -12,13 +12,17 @@
   }
 
 
-h1 {
-    margin-top: -5px;
-    /* background-color: var(--lavender); */
-    padding: 15px;
-    border-bottom: 2px solid var(--lavender);
+.header-container {
+  display: flex;
+  align-items: center; 
+  /* padding: 15px; */
+  border-bottom: 2px solid var(--lavender);
 }
 
+.github-link {
+  margin-left: auto; /* Push the GitHub icon to the right */
+  /* margin-top: px; Adjust the margin-top as needed */
+}
 
 .game-grid {
     gap: 5px; 
@@ -111,3 +115,4 @@ button {
   background-color: var(--lavender);
 
 }
+
