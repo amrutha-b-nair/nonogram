@@ -8,21 +8,23 @@
   </head>
 </head>
 <body>
-    <h1>Nonogram</h1>
-    <div class="game-container">
-      <div id="gameGrid" class="game-grid"></div>
-      <button id="submitBtn">Done</button>
-      <button id="newGame">New Game</button>
-      <button id="restart">Restart</button>
-      <div id="modal" class="modal">
-        <div class="modal-content">
-          <h2>You Won!</h2>
-          <button id="playAgainBtn">Play Again</button>
-          <button id="rePlay">Replay</button>
+    <div class="game">
+      <h1>nonogram</h1>
+      <div class="game-container">
+        <div id="gameGrid" class="game-grid"></div>
+        <!-- <button id="submitBtn">Done</button> -->
+        <div id="modal" class="modal">
+          <div class="modal-content">
+            <h2>You Won!</h2>
+            <button id="playAgainBtn">Play Again</button>
+            <button id="rePlay">Replay</button>
+          </div>
         </div>
       </div>
-    </div>
+    </div> 
     <div class="settings"> 
+      <button id="newGame">New Game</button>
+      <button id="restart">Restart</button>
       <div id="controls">
         <label for="rows">Rows:</label>
         <input type="number" id="rows" min="1" value="9">

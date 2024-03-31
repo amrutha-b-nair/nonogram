@@ -4,7 +4,7 @@
     --tango-pink: #EA7186;
     --mustard-yellow: #cb9c3f;
     --blue-violet: #7A77B9;
-    --lavender: #BD9DEA;
+    --lavender: #e9dcfc;
     --light-lavender: #dac9f2;
     --yellow: #ebb953;
     --dark-pink: #c85165;
@@ -12,11 +12,20 @@
   }
 
 
+h1 {
+    margin-top: -5px;
+    /* background-color: var(--lavender); */
+    padding: 15px;
+    border-bottom: 2px solid var(--lavender);
+}
+
+
 .game-grid {
     gap: 5px; 
     background-color: var(--platinum) ;
     padding: 10px;
     margin: 10px auto;
+    border: 2px solid var(--lavender);
 }
 
 .cell {
@@ -70,3 +79,35 @@ z-index: 10000;
 .hide-flagged::after {
     display: none;
   }
+
+.settings {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 200px; 
+  padding: 10px;
+  margin: 20px;
+}
+
+@media (max-width: 768px) {
+  .settings {
+    position: relative;
+    width: auto;
+    margin-top: -60px; 
+  }
+}
+
+button, input {
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px; 
+  border:  1px solid var(--tango-pink);
+  padding: 5px 10px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+button {
+  background-color: var(--lavender);
+
+}

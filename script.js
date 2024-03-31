@@ -247,8 +247,7 @@ function startGame() {
       e.preventDefault();
       const currColor = cell.style.backgroundColor;
       solutionGrid[row][column] = 0;
-
-      if (currColor != 'var(--yellow)' || currColor != 'var(--mustard-yellow)') {
+      if (currColor != 'var(--yellow)' && currColor != 'var(--mustard-yellow)') {
         cell.style.backgroundColor = 'var(--yellow)';
       } else {
         cell.style.backgroundColor = 'white';
@@ -308,12 +307,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let {solutionGrid, rowHeadings, columnHeadings} = startGame();
 
-  submitBtn.addEventListener('click', function() {
-    const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
-    if (gameWon) {
-      showModal(modal);
-    }
-  });
+  // submitBtn.addEventListener('click', function() {
+  //   const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
+  //   if (gameWon) {
+  //     showModal(modal);
+  //   }
+  // });
   playAgainBtn.addEventListener('click', function() {
     hideModal(modal); 
     window.location.reload();
