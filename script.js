@@ -290,6 +290,7 @@ function startGame() {
     
 
   });
+  hideModal(modal);
   return {solutionGrid, rowHeadings, columnHeadings};
 }
 
@@ -307,10 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let {solutionGrid, rowHeadings, columnHeadings} = startGame();
 
-  playAgainBtn.addEventListener('click', function() {
-    startGame();
-    hideModal(modal); 
-  });
+  playAgainBtn.addEventListener('click', startGame);
 
   rePlayBtn.addEventListener('click', function() {
     hideModal(modal); 
