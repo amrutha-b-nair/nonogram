@@ -307,7 +307,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let {solutionGrid, rowHeadings, columnHeadings} = startGame();
 
-  playAgainBtn.addEventListener('click', startGame);
+  playAgainBtn.addEventListener('click', function() {
+    startGame();
+    hideModal(modal); 
+  });
 
   rePlayBtn.addEventListener('click', function() {
     hideModal(modal); 

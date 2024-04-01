@@ -9,19 +9,18 @@
     --yellow: #ebb953;
     --dark-pink: #c85165;
     --dusty-pink: #c85f70;
+
   }
 
 
 .header-container {
   display: flex;
   align-items: center; 
-  /* padding: 15px; */
   border-bottom: 2px solid var(--lavender);
 }
 
 .github-link {
-  margin-left: auto; /* Push the GitHub icon to the right */
-  /* margin-top: px; Adjust the margin-top as needed */
+  margin-left: auto; 
 }
 
 .game-grid {
@@ -108,11 +107,77 @@ button, input {
   border:  1px solid var(--tango-pink);
   padding: 5px 10px;
   font-weight: bold;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
+  width: 93px;
 }
 
 button {
   background-color: var(--lavender);
-
+  margin-bottom: 15px;
 }
 
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--dusty-pink);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--dark-pink);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+body.dark-mode {
+  background-color: #1f1f1f;
+  color: #ddd;
+}
