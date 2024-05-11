@@ -160,11 +160,25 @@ function generateGame(gameGrid, nrows, ncols) {
   let celltot = nrows * ncols;
   let width = (ncols+1)*45;
   let height = (nrows+1)*45;
+
   gameGrid.style.display = 'grid';
   gameGrid.style.gridTemplateRows = `repeat(${nrows} + 1, 1fr)`;
   gameGrid.style.gridTemplateColumns = `repeat(${ncols} + 1, 1fr)`;
   gameGrid.style.width = `${width}px`;
   gameGrid.style.height = `${height}px`;
+
+  let windowWidth = window.innerWidth;
+  let settings = document.querySelector('.settings');
+
+  if (width > windowWidth - 200) {
+    settings.style.position = 'relative';
+    settings.style.width = 'auto';
+    settings.style.marginTop = '-60px';
+  } else {
+    settings.style.position = '';
+    settings.style.width = '';
+    settings.style.marginTop = '';
+  }
 
   const {grid, rowHeadings} = generateGrid(nrows, ncols);
   const columnHeadings = getHeadings(grid, 1);
