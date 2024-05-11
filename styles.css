@@ -19,6 +19,12 @@
   border-bottom: 2px solid var(--lavender);
 }
 
+.game{
+  width: 80%;
+}
+
+
+
 .github-link {
   margin-left: auto; 
 }
@@ -87,18 +93,22 @@ z-index: 10000;
   position: absolute;
   top: 70px;
   right: 0;
-  width: 200px; 
+  width: 20%; 
+  max-width: 200px;
   padding: 10px;
   margin: 20px;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 770px) {
   .settings {
     position: relative;
     width: auto;
     margin-top: -60px; 
   }
-}
+  .game {
+    width: 100%;
+  }
+} */
 
 button, input {
   margin-top: 10px;

@@ -120,6 +120,29 @@ function hideModal(modal) {
   document.querySelector('.game-grid').style.filter = 'none';
 }
 
+function resizeWindow(gridWidth){
+  let windowWidth = window.innerWidth;
+  let settings = document.querySelector('.settings');
+  let game = document.querySelector('.game');
+
+  console.log(windowWidth < gridWidth + 180, windowWidth , gridWidth );
+
+  if (windowWidth < gridWidth + 200) {
+    settings.style.position = 'relative';
+    settings.style.width = 'auto';
+    settings.style.marginTop = '-60px';
+    game.style.width = '100%';
+  } else {
+    console.log("yesssssss")
+    settings.style.position = '';
+    settings.style.width = '';
+    settings.style.marginTop = '';
+    game.style.width = '80%';
+  }
+
+
+}
+
 function getDimension() {
   const rowsInput = document.getElementById('rows');
   const colsInput = document.getElementById('cols');
@@ -167,18 +190,7 @@ function generateGame(gameGrid, nrows, ncols) {
   gameGrid.style.width = `${width}px`;
   gameGrid.style.height = `${height}px`;
 
-  let windowWidth = window.innerWidth;
-  let settings = document.querySelector('.settings');
-
-  if (width > windowWidth - 200) {
-    settings.style.position = 'relative';
-    settings.style.width = 'auto';
-    settings.style.marginTop = '-60px';
-  } else {
-    settings.style.position = '';
-    settings.style.width = '';
-    settings.style.marginTop = '';
-  }
+  resizeWindow(width);
 
   const {grid, rowHeadings} = generateGrid(nrows, ncols);
   const columnHeadings = getHeadings(grid, 1);
@@ -308,6 +320,12 @@ function startGame() {
     
 
   });
+  window.addEventListener('resize', function() {
+
+    let gameGridWidth = document.querySelector('.game-grid').offsetWidth;
+    resizeWindow(gameGridWidth);
+});
+
   hideModal(modal);
   return {solutionGrid, rowHeadings, columnHeadings};
 }
