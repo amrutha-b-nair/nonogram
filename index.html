@@ -10,7 +10,7 @@
 <body>
     <div class="game">
       <div class="header-container">
-        <h1 class="header">Nonogram</h1>
+        <h1 class="header">nonogram</h1>
         <a href="https://github.com/amrutha-b-nair/nonogram" target="_blank" class="github-link"><img src="github-logo.png" alt="GitHub" width="30" height="30"></a>
       </div>
       <div class="game-container">
@@ -30,9 +30,9 @@
       <button id="restart">Restart</button>
       <div id="controls">
         <label for="rows">Rows:</label>
-        <input type="number" id="rows" min="1" value="9">
+        <input type="number" id="rows" min="1" value="9" pattern="[1-9][0-9]*">
         <label for="cols">Columns:</label>
-        <input type="number" id="cols" min="1" value="9">
+        <input type="number" id="cols" min="1" value="9" pattern="[1-9][0-9]*">
         <button id="startGame">Start Game</button>
         <br>
         <!-- <label for="cols" for="darkMode">Dark Mode:</label>

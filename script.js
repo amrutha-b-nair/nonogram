@@ -220,6 +220,10 @@ function unselectColor(color) {
 function startGame() {
   const gameGrid = document.querySelector('.game-grid');
   let {nrows, ncols} = getDimension();
+  if (nrows < 1 || ncols < 1){
+    alert("Rows and columns should be more than 0.");
+    return;
+  }
   let solutionGrid = emptyGrid(nrows, ncols);
   gameGrid.innerHTML = '';  
   const {columnHeadings, rowHeadings} = generateGame(gameGrid, nrows, ncols);
