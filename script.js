@@ -124,8 +124,7 @@ function resizeWindow(gridWidth){
   let windowWidth = window.innerWidth;
   let settings = document.querySelector('.settings');
   let game = document.querySelector('.game');
-
-  console.log(windowWidth < gridWidth + 180, windowWidth , gridWidth );
+  let input = document.querySelector('.input');
 
   if (windowWidth < gridWidth + 200) {
     settings.style.position = 'relative';
@@ -306,6 +305,9 @@ function startGame() {
           const newColor = selectColor(originalColor);
           cells[index].style.backgroundColor = newColor;
         });
+
+        cells[column].style.fontSize = '20px';
+        cells[index - column].style.fontSize = '20px';
       }, 300);
     });
     
@@ -316,15 +318,14 @@ function startGame() {
         const newColor = unselectColor(originalColor);
         cells[index].style.backgroundColor = newColor;
       });
+
+      cells[column].style.fontSize = '';
+      cells[index - column].style.fontSize = '';
     });
     
 
   });
-  window.addEventListener('resize', function() {
 
-    let gameGridWidth = document.querySelector('.game-grid').offsetWidth;
-    resizeWindow(gameGridWidth);
-});
 
   hideModal(modal);
   return {solutionGrid, rowHeadings, columnHeadings};
@@ -358,6 +359,11 @@ document.addEventListener('DOMContentLoaded', function() {
     solutionGrid.forEach(sublist => sublist.fill(0));
     document.querySelectorAll('.cell').forEach(cell => cell.style.backgroundColor = 'white');    
   })
+  window.addEventListener('resize', function() {
+
+    let gameGridWidth = document.querySelector('.game-grid').offsetWidth;
+    resizeWindow(gameGridWidth);
+});
 });
 
 

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
 </head>
-<body>
+<body class="monospace">
   <div class="header-container">
     <h1 class="header">nonogram</h1>
     <a href="https://github.com/amrutha-b-nair/nonogram" target="_blank" class="github-link"><img src="github-logo.png" alt="GitHub" width="30" height="30"></a>
@@ -29,18 +29,18 @@
       <button id="newGame">New Game</button>
       <button id="restart">Restart</button>
       <div id="controls">
-        <label for="rows">Rows:</label>
+        <label for="rows">Rows: </label>
         <input type="number" id="rows" min="1" value="9" pattern="[1-9][0-9]*">
-        <label for="cols">Columns:</label>
+        <label for="cols">Cols:</label>
         <input type="number" id="cols" min="1" value="9" pattern="[1-9][0-9]*">
         <button id="startGame">Start Game</button>
-        <br>
-        <!-- <label for="cols" for="darkMode">Dark Mode:</label>
-        <label class="switch">
-          <input type="checkbox" id="darkMode">
-          <span class="slider round"></span>
-        </label> -->
       </div>
+      <br>
+      <!-- <label for="darkMode">Dark Mode:</label>
+      <label class="switch">
+        <input type="checkbox" id="darkMode">
+        <span class="slider round"></span>
+      </label> -->
     </div>
     <script type="module" src="./script.js"></script>
 </body>
