@@ -6,7 +6,28 @@ function emptyGrid(rows, cols) {
   return grid;
 }
 
-// let solutionGrid = emptyGrid();
+let timerInterval;
+let elapsedSeconds = 0;
+let timerStarted = false; // Flag to track if the timer has started
+
+function startTimer() {
+  elapsedSeconds = 0;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    elapsedSeconds++;
+    updateTimerDisplay();
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = elapsedSeconds % 60;
+  document.getElementById('timer').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
 
 function getHeadings(grid, column) {
   let rows, cols;
@@ -99,8 +120,6 @@ function compareHints(list1, list2) {
   });
 }
 
-
-
 function checkSolution(solutionGrid, columnHeadings, rowHeadings) {
   const colSolution = getHeadings(solutionGrid, 1);
   const rowSolution = getHeadings(solutionGrid, 0);
@@ -132,14 +151,11 @@ function resizeWindow(gridWidth){
     settings.style.marginTop = '-60px';
     game.style.width = '100%';
   } else {
-    console.log("yesssssss")
     settings.style.position = '';
     settings.style.width = '';
     settings.style.marginTop = '';
     game.style.width = '80%';
   }
-
-
 }
 
 function getDimension() {
@@ -149,7 +165,6 @@ function getDimension() {
   let ncols = parseInt(colsInput.value);
   return {nrows, ncols};
 }
-
 
 function createRowHeading(rowNumbers, rowIndex) {
   const rowHeading = document.createElement('div');
@@ -229,7 +244,6 @@ function selectColor(color) {
   }
 }
 
-
 function unselectColor(color) {
   if (color === 'var(--dark-pink)' ||  color === 'var(--tango-pink)'){
     return 'var(--tango-pink)';
@@ -241,6 +255,14 @@ function unselectColor(color) {
   }
 }
 
+function winningStatus(solutionGrid, columnHeadings, rowHeadings) {
+  const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
+  if (gameWon) {
+    stopTimer();
+    showModal(modal);
+    document.querySelector('.modal-content h3').textContent = `Time taken: ${document.getElementById('timer').textContent}`;
+  }
+}
 
 function startGame() {
   const gameGrid = document.querySelector('.game-grid');
@@ -256,24 +278,31 @@ function startGame() {
   cells.forEach((cell, index) => {
     const row = Math.floor(index / ncols);
     const column = index % ncols;
+    
     cell.addEventListener('click', function() {
+      if (!timerStarted) {
+        startTimer();
+        timerStarted = true;
+      }
+
       const currColor = cell.style.backgroundColor;
       if (currColor != 'var(--tango-pink)' && currColor != 'var(--dark-pink)') {
         cell.style.backgroundColor = 'var(--tango-pink)';
         solutionGrid[row][column] = 1;
-
       } else {
         cell.style.backgroundColor = "white";
         solutionGrid[row][column] = 0;
       }
-      const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
-      if (gameWon) {
-        showModal(modal);
-      }
+      winningStatus(solutionGrid, columnHeadings, rowHeadings)
     });
-    
+
     cell.addEventListener('contextmenu', function(e) {
       e.preventDefault();
+      if (!timerStarted) {
+        startTimer();
+        timerStarted = true;
+      }
+
       const currColor = cell.style.backgroundColor;
       solutionGrid[row][column] = 0;
       if (currColor != 'var(--yellow)' && currColor != 'var(--mustard-yellow)') {
@@ -281,10 +310,7 @@ function startGame() {
       } else {
         cell.style.backgroundColor = 'white';
       }
-      const gameWon = checkSolution(solutionGrid, columnHeadings, rowHeadings);
-      if (gameWon) {
-        showModal(modal);
-      }
+      winningStatus(solutionGrid, columnHeadings, rowHeadings)
     });
 
     let selected_cells = Array.from({ length: ncols + nrows }, (_, i) => {
@@ -294,8 +320,7 @@ function startGame() {
         return column + (i - ncols) * ncols;
       } 
     }).filter(cell => cell !== undefined);
-    
-    
+
     let hoverTimeout;
 
     cell.addEventListener('mouseenter', function() {
@@ -310,7 +335,7 @@ function startGame() {
         cells[index - column].style.fontSize = '20px';
       }, 300);
     });
-    
+
     cell.addEventListener('mouseleave', function() {
       clearTimeout(hoverTimeout);
       selected_cells.forEach((index) => {
@@ -322,18 +347,14 @@ function startGame() {
       cells[column].style.fontSize = '';
       cells[index - column].style.fontSize = '';
     });
-    
-
   });
 
-
   hideModal(modal);
+  timerStarted = false; // Reset the timer flag
   return {solutionGrid, rowHeadings, columnHeadings};
 }
 
-
 document.addEventListener('DOMContentLoaded', function() {
-
   const submitBtn = document.getElementById('submitBtn');
   const modal = document.getElementById('modal');
   const playAgainBtn = document.getElementById('playAgainBtn');
@@ -341,7 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const newGameBtn = document.getElementById('newGame');
   const startGameBtn = document.getElementById('startGame');
   const restartBtn = document.getElementById('restart');
-
 
   let {solutionGrid, rowHeadings, columnHeadings} = startGame();
 
@@ -358,22 +378,12 @@ document.addEventListener('DOMContentLoaded', function() {
   restartBtn.addEventListener('click', function() {
     solutionGrid.forEach(sublist => sublist.fill(0));
     document.querySelectorAll('.cell').forEach(cell => cell.style.backgroundColor = 'white');    
-  })
-  window.addEventListener('resize', function() {
+    timerStarted = false; // Reset the timer flag
+    startTimer(); // Reset and start the timer on restart
+  });
 
+  window.addEventListener('resize', function() {
     let gameGridWidth = document.querySelector('.game-grid').offsetWidth;
     resizeWindow(gameGridWidth);
+  });
 });
-});
-
-
-
-
-
-
-
-
-
-
-
-
